@@ -1,0 +1,29 @@
+body {
+    background-color: #3ac0ff;
+}
+
+#wrapper {
+
+}
+
+header {
+    background-color: #000;
+    color: #fff;
+}
+
+header > h1 {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.ui.card.group {
+    margin: 20px;
+    padding: 3px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.ui.card.group > .content > .description > .list {
+
+}

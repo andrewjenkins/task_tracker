@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static "task_manager/css/semantic.min.css" %}" />
+    <link rel="stylesheet" href="{% static "task_manager/css/style.css" %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static "task_manager/js/semantic.min.js" %}"></script>
+</head>
+<body>
+<div id="wrapper">
+    <header>
+        <h1><i class="idea icon"></i>Task Tracker</h1>
+    </header>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>
