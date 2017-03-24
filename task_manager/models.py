@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Board(models.Model):
-    owner = models.ForeignKey()
+    owner = models.ForeignKey(User)
 
 
 class Group(models.Model):

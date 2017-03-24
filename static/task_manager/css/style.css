@@ -26,7 +26,7 @@ header > h1 {
 }
 
 
-div.item > form.ui.action.input > input {
+form.ui.action.input > input {
     width: 100%;
 }
 
