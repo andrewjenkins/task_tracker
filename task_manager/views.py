@@ -6,7 +6,6 @@ from django.views import generic
 
 class IndexView(generic.TemplateView):
     template_name = "task_manager/tracker.html"
-    title = "TestEr"
 
     def get_context_data(self, **kwargs):
         context = {'title': "tester"}

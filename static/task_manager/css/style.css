@@ -22,8 +22,16 @@ header > h1 {
     padding: 3px;
     vertical-align: top;
     display: inline-block;
+    background-color: #B4E7FF;
 }
 
-.ui.card.group > .content > .description > .list {
 
+div.item > form.ui.action.input > input {
+    width: 100%;
+}
+
+.ui.list > .ui.segment {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
