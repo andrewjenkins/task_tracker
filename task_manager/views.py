@@ -9,8 +9,8 @@ class IndexView(generic.TemplateView):
     template_name = "task_manager/tracker.html"
 
     def get_context_data(self, **kwargs):
-        board = Board.objects.get(User=self.request.user)
-        groups = Group.objects.get(Board=board)
+        board = Board.objects.get(owner=self.request.user)
+        groups = Group.objects.get(board=board)
         context = {
             'title': "tester",
             'groups': groups
