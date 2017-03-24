@@ -122,3 +122,4 @@ ENV/
 
 # Django
 db.sqlite3
+migrations/
