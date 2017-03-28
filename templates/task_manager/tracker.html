@@ -3,17 +3,17 @@
     {% for group in groups %}
     <div class="group ui card">
         <div class="content">
-            <div class="header">{{ group.name }}</div>
+            <div class="header">{{ group.name|striptags }}</div>
             <div class="description">
                 <div class="ui list">
-                    <div class="ui segment">Item 1</div>
-                    <div class="ui segment">Item 2</div>
-                    <div class="ui segment">Item 3</div>
-                    <div class="ui segment">Item 4</div>
+                    {% for item in group.item_set.all %}
+                    <div class="ui segment">{{ item.content|striptags }}</div>
+                    {% endfor %}
                     <div class="item">
-                        <form action="#" class="ui action input" method="post">
+                        <form action="{% url 'add_item' %}" class="ui action input" method="post">
                             {% csrf_token %}
-                            <input type="text" placeholder="Add a new item..."/>
+                            <input type="hidden" name="group_id" value="{{ group.id }}" />
+                            <input type="text" name="content" placeholder="Add a new item..."/>
                             <button class="ui icon button">
                                 <i class="plus icon"></i>
                             </button>
@@ -30,9 +30,10 @@
     <div class="group ui card">
         <div class="content">
             <div class="description">
-                <form action="#" class="ui action input" method="post">
+                <form action="{% url 'add_group' %}" class="ui action input" method="post">
                     {% csrf_token %}
-                    <input type="text" placeholder="Add a new group..."/>
+                    <input type="hidden" name="board_id" value="{{ board.id }}" />
+                    <input type="text" name="group_name" placeholder="Add a new group..." maxlength="64" />
                     <button class="ui icon button">
                         <i class="plus icon"></i>
                     </button>
