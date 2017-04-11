@@ -1,0 +1,37 @@
+{% extends "task_manager/base.html" %}
+{% block content %}
+<form id="container" class="ui segment" method="post" action="#">
+    <h1 class="ui header">Login</h1>
+    {% if error %}
+        <div class="ui error message">Test</div>
+    {% endif %}
+    <div class="ui segment">
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="text" name="username" placeholder="Username">
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="password" placeholder="Password">
+            </div>
+        </div>
+        <button class="ui submit button">Login</button>
+        {% csrf_token %}
+    </div>
+
+    <div class="ui horizontal divider">
+        Or
+    </div>
+
+    <div id="signup">
+        <a href="#">
+            <button class="ui button">
+                Sign Up
+            </button>
+        </a>
+    </div>
+</form>
+{% endblock %}

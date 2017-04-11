@@ -9,11 +9,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="{% static "task_manager/js/semantic.min.js" %}"></script>
     <script src="{% static "task_manager/js/main.js" %}"></script>
+    {% block head %}{% endblock %}
 </head>
 <body>
 <div id="wrapper">
     <header>
         <h1><i class="idea icon"></i>Task Tracker</h1>
+        <div id="menu">
+            {% if user.is_authenticated %}
+                <button class="small ui inverted blue button">Logout</button>
+            {% else %}
+                <button class="small ui inverted blue button">Login</button>
+                <button class="small ui inverted blue button">Register</button>
+            {% endif %}
+        </div>
     </header>
     <div id="content">
         {% block content %}
