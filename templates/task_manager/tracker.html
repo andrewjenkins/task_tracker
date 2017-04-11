@@ -6,13 +6,28 @@
                 revert: true,
                 connectWith: '.list',
                 update: function (event, ui) {
-                    var data = {
+                    var order_data = {
                         "items": $(this).sortable('serialize'),
                         "csrfmiddlewaretoken": "{{ csrf_token }}"
                     };
 
+                    // make sure we only send one group change request
+                    if (this !== ui.item.parent()[0]) {
+                        var group_data = {
+                            "item_id": ui.item.attr('id').substr(5),
+                            "group_id": ui.item.parent().attr('id').substr(5),
+                            "csrfmiddlewaretoken": "{{ csrf_token }}"
+                        }
+
+                        $.ajax({
+                            data: group_data,
+                            type: 'POST',
+                            url: '{%  url 'move_item' %}'
+                        });
+                    }
+
                     $.ajax({
-                        data: data,
+                        data: order_data,
                         type: 'POST',
                         url: '{% url 'order_items' %}'
                     });
@@ -29,7 +44,7 @@
         <div class="content">
             <div class="header">{{ group.name|striptags }}</div>
             <div class="description">
-                <div class="ui list">
+                <div id="list_{{ group.id }}" class="ui list">
                     {% for item in group.item_set.all %}
                     <div id="item_{{ item.id }}" class="ui item segment">{{ item.content|striptags }}</div>
                     {% endfor %}
