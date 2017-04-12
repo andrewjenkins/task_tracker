@@ -24,9 +24,8 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def get_next_order_id():
-        return Group.objects.count() + 1
+    def get_next_order_id(self):
+        return self.board.group_set.count() + 1
 
     class Meta:
         ordering = ['order']
@@ -48,6 +47,5 @@ class Item(models.Model):
     class Meta:
         ordering = ['order']
 
-    @staticmethod
-    def get_next_order_id():
-        return Item.objects.count() + 1
+    def get_next_order_id(self):
+        return self.group.item_set.count() + 1
