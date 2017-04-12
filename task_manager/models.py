@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class Board(models.Model):
     id = models.AutoField(primary_key=True)
     owner = models.ForeignKey(User)
+    create_time = models.DateTimeField(auto_now_add=True, blank=True)
 
     def has_access(self, user):
         return self.owner == user
@@ -15,6 +16,7 @@ class Group(models.Model):
     order = models.IntegerField()
     name = models.CharField(max_length=64)
     board = models.ForeignKey(Board)
+    create_time = models.DateTimeField(auto_now_add=True, blank=True)
 
     def has_access(self, user):
         return self.board.has_access(user)
@@ -35,6 +37,7 @@ class Item(models.Model):
     order = models.IntegerField()
     content = models.TextField()
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    create_time = models.DateTimeField(auto_now_add=True, blank=True)
 
     def has_access(self, user):
         return self.group.has_access(user)
