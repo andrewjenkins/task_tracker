@@ -6,12 +6,18 @@ class Board(models.Model):
     id = models.AutoField(primary_key=True)
     owner = models.ForeignKey(User)
 
+    def has_access(self, user):
+        return self.owner == user
+
 
 class Group(models.Model):
     id = models.AutoField(primary_key=True)
     order = models.IntegerField()
     name = models.CharField(max_length=64)
     board = models.ForeignKey(Board)
+
+    def has_access(self, user):
+        return self.board.has_access(user)
 
     def __str__(self):
         return self.name
@@ -29,6 +35,9 @@ class Item(models.Model):
     order = models.IntegerField()
     content = models.TextField()
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
+    def has_access(self, user):
+        return self.group.has_access(user)
 
     def __str__(self):
         return self.content
