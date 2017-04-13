@@ -45,6 +45,10 @@ form.ui.action.input > input {
     padding-right: 5px;
 }
 
+.ui.list {
+    min-height: 10px;
+}
+
 .ui.list > .ui.segment {
     padding: 10px;
     margin-top: 10px;
