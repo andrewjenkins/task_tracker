@@ -26,7 +26,7 @@ header > #menu {
     float: right;
 }
 
-header > #menu > button {
+header > #menu > a > button {
     margin-top: 9px;
     display: inline-block;
 }

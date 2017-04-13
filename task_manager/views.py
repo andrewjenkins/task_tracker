@@ -2,11 +2,14 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpRespons
 from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout, authenticate, login
 from .models import Board, Group, Item
 from .utils import parse_item_orders
 
 
-class Index(generic.TemplateView):
+class Index(LoginRequiredMixin, generic.TemplateView):
+    login_url = 'login'
     template_name = "task_manager/tracker.html"
 
     def get_context_data(self, **kwargs):
@@ -18,7 +21,7 @@ class Index(generic.TemplateView):
         return context
 
 
-class AddGroup(generic.View):
+class AddGroup(LoginRequiredMixin, generic.View):
     def post(self, request):
         g = Group()
         g.name = request.POST['group_name']  # TODO: use form to validate input
@@ -32,7 +35,7 @@ class AddGroup(generic.View):
         return HttpResponseRedirect(reverse('index'))
 
 
-class OrderGroup(generic.View):
+class OrderGroup(LoginRequiredMixin, generic.View):
     def post(self, request):
         order = 0
         item_ids = parse_item_orders(request.POST['items'])
@@ -45,7 +48,7 @@ class OrderGroup(generic.View):
         return HttpResponse(status=200)
 
 
-class AddItem(generic.View):
+class AddItem(LoginRequiredMixin, generic.View):
     def post(self, request):
         item = Item()
         group_id = int(request.POST['group_id'])
@@ -59,7 +62,7 @@ class AddItem(generic.View):
         return HttpResponseRedirect(reverse('index'))
 
 
-class MoveItem(generic.View):
+class MoveItem(LoginRequiredMixin, generic.View):
     def post(self, request):
         item_id = int(request.POST['item_id'])
         new_group_id = int(request.POST['group_id'])
@@ -80,3 +83,20 @@ class Login(generic.TemplateView):
         context = super(Login, self).get_context_data(**kwargs)
         context['title'] = 'Task Tracker'
         return context
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            # TODO: return invalid pw
+            return HttpResponseForbidden()
+
+
+class Logout(LoginRequiredMixin, generic.View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse('login'))
