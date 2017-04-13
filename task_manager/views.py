@@ -21,9 +21,13 @@ class Index(generic.TemplateView):
 class AddGroup(generic.View):
     def post(self, request):
         g = Group()
-        g.order = Group.get_next_order_id()
         g.name = request.POST['group_name']  # TODO: use form to validate input
-        g.board_id = int(request.POST['board_id'])  # TODO: validate that user owns board
+        board_id = int(request.POST['board_id'])
+        board = get_object_or_404(Board, id=board_id)
+        if not board.has_access(request.user):
+            return HttpResponseForbidden()
+        g.board = board
+        g.order = g.get_next_order_id()
         g.save()
         return HttpResponseRedirect(reverse('index'))
 
@@ -44,9 +48,13 @@ class OrderGroup(generic.View):
 class AddItem(generic.View):
     def post(self, request):
         item = Item()
-        item.group_id = request.POST['group_id'] # TODO: validate that user owns group
+        group_id = int(request.POST['group_id'])
+        group = get_object_or_404(Group, id=group_id)
+        if not group.has_access(request.user):
+            return HttpResponseForbidden()
+        item.group = group
         item.order = item.get_next_order_id()
-        item.content = request.POST['content']
+        item.content = request.POST['content']  # TODO: validate content with form?
         item.save()
         return HttpResponseRedirect(reverse('index'))
 
