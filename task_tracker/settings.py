@@ -121,3 +121,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join('static'),)
+
+# Task Tracker specific
+
+MAX_BOARD_NAME_LENGTH = 32
+MAX_GROUP_NAME_LENGTH = 32
