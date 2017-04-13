@@ -1,11 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+MAX_BOARD_NAME_LENGTH = 64
+MAX_GROUP_NAME_LENGTH = 64
+
 
 class Board(models.Model):
     id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=MAX_BOARD_NAME_LENGTH, default='Default')
     owner = models.ForeignKey(User)
-    create_time = models.DateTimeField(auto_now_add=True, blank=True)
+    create_time = models.DateTimeField(auto_now_add=True, editable=False)
 
     def has_access(self, user):
         return self.owner == user
@@ -14,9 +18,9 @@ class Board(models.Model):
 class Group(models.Model):
     id = models.AutoField(primary_key=True)
     order = models.IntegerField()
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=MAX_GROUP_NAME_LENGTH)
     board = models.ForeignKey(Board)
-    create_time = models.DateTimeField(auto_now_add=True, blank=True)
+    create_time = models.DateTimeField(auto_now_add=True, editable=False)
 
     def has_access(self, user):
         return self.board.has_access(user)
@@ -36,7 +40,7 @@ class Item(models.Model):
     order = models.IntegerField()
     content = models.TextField()
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    create_time = models.DateTimeField(auto_now_add=True, blank=True)
+    create_time = models.DateTimeField(auto_now_add=True, editable=False)
 
     def has_access(self, user):
         return self.group.has_access(user)
