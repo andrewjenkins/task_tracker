@@ -21,7 +21,7 @@ class Index(LoginRequiredMixin, generic.TemplateView):
         return context
 
 
-class AddGroup(LoginRequiredMixin, generic.View):
+class GroupAdd(LoginRequiredMixin, generic.View):
     def post(self, request):
         g = Group()
         g.name = request.POST['group_name']  # TODO: use form to validate input
@@ -35,7 +35,7 @@ class AddGroup(LoginRequiredMixin, generic.View):
         return HttpResponseRedirect(reverse('index'))
 
 
-class OrderGroup(LoginRequiredMixin, generic.View):
+class GroupOrder(LoginRequiredMixin, generic.View):
     def post(self, request):
         order = 0
         item_ids = parse_item_orders(request.POST['items'])
@@ -48,7 +48,17 @@ class OrderGroup(LoginRequiredMixin, generic.View):
         return HttpResponse(status=200)
 
 
-class AddItem(LoginRequiredMixin, generic.View):
+class GroupDelete(LoginRequiredMixin, generic.View):
+    def post(self, request):
+        group_id = int(request.POST['group_id'])
+        group = get_object_or_404(Group, id=group_id)
+        if not group.has_access(request.user):
+            return HttpResponseForbidden()
+        group.delete()
+        return HttpResponse(status=200)
+
+
+class ItemAdd(LoginRequiredMixin, generic.View):
     def post(self, request):
         item = Item()
         group_id = int(request.POST['group_id'])
@@ -62,7 +72,7 @@ class AddItem(LoginRequiredMixin, generic.View):
         return HttpResponseRedirect(reverse('index'))
 
 
-class MoveItem(LoginRequiredMixin, generic.View):
+class ItemMove(LoginRequiredMixin, generic.View):
     def post(self, request):
         item_id = int(request.POST['item_id'])
         new_group_id = int(request.POST['group_id'])

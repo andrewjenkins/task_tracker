@@ -23,14 +23,14 @@
                         $.ajax({
                             data: group_data,
                             type: 'POST',
-                            url: '{%  url 'move_item' %}'
+                            url: '{%  url 'item_move' %}'
                         });
                     }
 
                     $.ajax({
                         data: order_data,
                         type: 'POST',
-                        url: '{% url 'order_group' %}'
+                        url: '{% url 'group_order' %}'
                     });
                 }
             });
@@ -50,7 +50,7 @@
                     <div id="item_{{ item.id }}" class="ui item segment">{{ item.content|striptags }}</div>
                     {% endfor %}
                 </div>
-                <form action="{% url 'add_item' %}" class="ui action input" method="post">
+                <form action="{% url 'item_add' %}" class="ui action input" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="group_id" value="{{ group.id }}" />
                     <input type="text" name="content" placeholder="Add a new item..."/>
@@ -68,7 +68,7 @@
     <div class="group ui card">
         <div class="content">
             <div class="description">
-                <form action="{% url 'add_group' %}" class="ui action input" method="post">
+                <form action="{% url 'group_add' %}" class="ui action input" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="board_id" value="{{ board.id }}" />
                     <input type="text" name="group_name" placeholder="Add a new group..." maxlength="64" />
