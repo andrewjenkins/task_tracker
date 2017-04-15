@@ -86,6 +86,16 @@ class ItemMove(LoginRequiredMixin, generic.View):
         return HttpResponse(status=200)
 
 
+class ItemDelete(LoginRequiredMixin, generic.View):
+    def post(self, request):
+        item_id = int(request.POST['item_id'])
+        item = get_object_or_404(Item, id=item_id)
+        if not item.has_access(request.user):
+            return HttpResponseForbidden()
+        item.delete()
+        return HttpResponse(status=200)
+
+
 class Login(generic.TemplateView):
     template_name = "task_manager/login.html"
 

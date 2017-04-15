@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^group/delete', views.GroupDelete.as_view(), name="group_delete"),
     url(r'^item/add$', views.ItemAdd.as_view(), name='item_add'),
     url(r'^item/move$', views.ItemMove.as_view(), name='item_move'),
+    url(r'^item/delete$', views.ItemDelete.as_view(), name='item_delete'),
     url(r'^login$', views.Login.as_view(), name='login'),
     url(r'^logout$', views.Logout.as_view(), name='logout'),
 ]
