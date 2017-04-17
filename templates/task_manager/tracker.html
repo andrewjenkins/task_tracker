@@ -59,11 +59,40 @@
         });
 
         $( function() {
-            $('.delete_item').click(function (e) {
+            $('a.delete_item').click(function (e) {
                 e.preventDefault();
                 $(this).parent().hide();
+
+                var item_data = {
+                        "item_id": $(this).parent().attr('id').substr(5),
+                        "csrfmiddlewaretoken": "{{ csrf_token }}"
+                    };
+
+                $.ajax({
+                        data: item_data,
+                        type: 'POST',
+                        url: '{% url 'item_delete' %}'
+                    });
             });
-        })();
+        });
+
+        $( function() {
+            $('a.unlock_group').click(function (e) {
+                e.preventDefault();
+                if ($(this).children().hasClass('lock')) {
+                    $(this).parent().parent().find('a.delete_item').show();
+                    $(this).parent().parent().find('.ui.item.segment').css({'padding-right': '25px'});
+                    $(this).children().removeClass('lock');
+                    $(this).children().addClass('unlock');
+                }
+                else {
+                    $(this).parent().parent().find('a.delete_item').hide();
+                    $(this).parent().parent().find('.ui.item.segment').css({'padding-right': '10px'});
+                    $(this).children().removeClass('unlock');
+                    $(this).children().addClass('lock');
+                }
+            });
+        });
     </script>
 {% endblock %}
 
@@ -71,13 +100,15 @@
     {% for group in groups %}
     <div id="group_{{ group.id }}" class="group ui card">
         <div class="content">
-            <div class="header">{{ group.name|striptags }}</div>
+            <div class="header">
+                <a class="unlock_group" href="#"><i class="lock grey icon"></i></a>
+                {{ group.name|striptags }}</div>
             <div class="description">
                 <div id="list_{{ group.id }}" class="ui list">
                     {% for item in group.item_set.all %}
                         <div id="item_{{ item.id }}" class="ui item segment">
-                            {{ item.content|striptags }}
                             <a class="delete_item" href="#"><i class="remove circle red icon"></i></a>
+                            {{ item.content|striptags }}
                         </div>
                     {% endfor %}
                 </div>
@@ -91,9 +122,6 @@
                 </form>
             </div>
         </div>
-        <!--<div class="extra content">
-            TODO: add options to delete group
-        </div>-->
     </div>
     {% endfor %}
     <div class="group ui card">
@@ -109,8 +137,5 @@
                 </form>
             </div>
         </div>
-        <!--<div class="extra content">
-            TODO: add options to delete group
-        </div>-->
     </div>
 {% endblock %}

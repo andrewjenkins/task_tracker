@@ -31,6 +31,10 @@ header > #menu > a > button {
     display: inline-block;
 }
 
+.header > a > i {
+    float: right;
+}
+
 .ui.card.group {
     margin: 20px;
     padding: 3px;
@@ -39,19 +43,8 @@ header > #menu > a > button {
     background-color: #B4E7FF;
 }
 
-.ui.item.segment {
-    word-break: break-all;
-}
-
-
-.ui.item.segment > a > .icon {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-
 form.ui.action.input > input {
-    width: 99%;
+    width: 96%;
 }
 
 .ui.list {
@@ -59,9 +52,21 @@ form.ui.action.input > input {
 }
 
 .ui.list > .ui.segment {
+    word-break: break-all;
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.ui.list > .ui.segment > a {
+    display: none;
+}
+
+.ui.list > .ui.segment > a > .icon {
+    float: right;
+    display: inline-block;
+    height: 100%;
+    margin-right: -20px;
 }
 
 #container {

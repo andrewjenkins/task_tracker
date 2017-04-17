@@ -125,7 +125,7 @@ class Login(generic.TemplateView):
             login(request, user)
             return HttpResponseRedirect(reverse('index'))
         else:
-            # TODO: return invalid pw
+            # TODO: return invalid pwm
             return HttpResponseForbidden()
 
 
