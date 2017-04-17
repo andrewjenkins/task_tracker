@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^item/delete$', views.ItemDelete.as_view(), name='item_delete'),
     url(r'^login$', views.Login.as_view(), name='login'),
     url(r'^logout$', views.Logout.as_view(), name='logout'),
+    url(r'^register', views.Register.as_view(), name='register'),
 ]

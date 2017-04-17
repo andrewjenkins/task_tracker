@@ -76,24 +76,24 @@ form.ui.action.input > input {
     margin-top: 50px;
 }
 
-#container > h1 {
+#container > form > h1 {
     text-align: center;
 }
 
-#container > .segment > .field {
+#container > form > .segment > .field {
     margin: 5px;
 }
 
 
-#container > .segment > .field > .input {
+#container > form > .segment > .field > .input {
     width: 100%;
 }
 
-#container > .segment > .field > .input > input {
+#container > form > .segment > .field > .input > input {
     width: 100%;
 }
 
-#container > .segment > button {
+#container > form > .segment > button {
     display: inline-block;
 }
 
@@ -103,4 +103,13 @@ form.ui.action.input > input {
 
 #signup > a > button {
     display: inline-block;
+}
+
+#register {
+    text-align: right;
+}
+
+#register > button {
+    display: inline-block;
+    margin-top: 10px;
 }

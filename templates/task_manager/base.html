@@ -20,7 +20,7 @@
                 <a href="{% url 'logout' %}"><button class="small ui inverted blue button">Logout</button></a>
             {% else %}
                 <a href="{% url 'login' %}"><button class="small ui inverted blue button">Login</button></a>
-                <button class="small ui inverted blue button">Register</button>
+                <a href="{% url 'register' %}"><button class="small ui inverted blue button">Register</button></a>
             {% endif %}
         </div>
     </header>

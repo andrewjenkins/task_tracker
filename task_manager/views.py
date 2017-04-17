@@ -3,10 +3,11 @@ from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
 from .models import Board, Group, Item
 from .utils import parse_orders
-
+from .forms import RegisterForm
 
 class Index(LoginRequiredMixin, generic.TemplateView):
     login_url = 'login'
@@ -125,11 +126,26 @@ class Login(generic.TemplateView):
             login(request, user)
             return HttpResponseRedirect(reverse('index'))
         else:
-            # TODO: return invalid pwm
+            # TODO: return invalid pw msg
             return HttpResponseForbidden()
 
 
 class Logout(LoginRequiredMixin, generic.View):
     def get(self, request):
         logout(request)
+        return HttpResponseRedirect(reverse('login'))
+
+
+class Register(generic.FormView):
+    template_name = 'task_manager/register.html'
+    form_class = RegisterForm
+
+    def form_valid(self, form):
+        new_user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password'],
+            email=form.cleaned_data['email']
+        )
+        board = Board(owner=new_user)
+        board.save()
         return HttpResponseRedirect(reverse('login'))
