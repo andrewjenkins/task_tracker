@@ -4,4 +4,5 @@ An open source web tool for tracking tasks. Inspired by Trello.
 Built with:
 * Python 3.6.0
 * Django 1.10.6
+* jQuery 3.1.1
 * Semantic UI 2.2.9
