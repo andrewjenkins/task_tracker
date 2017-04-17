@@ -41,6 +41,7 @@
         // groups
         $( function() {
             $( "#content" ).sortable({
+                items: '.group:not(.pin)',
                 revert: true,
                 update: function (event, ui) {
                     var order_data = {
@@ -124,7 +125,7 @@
         </div>
     </div>
     {% endfor %}
-    <div class="group ui card">
+    <div class="group ui card pin">
         <div class="content">
             <div class="description">
                 <form action="{% url 'group_add' %}" class="ui action input" method="post">
