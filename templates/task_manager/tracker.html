@@ -2,99 +2,14 @@
 {% load static %}
 {% block head %}
     <script type="text/javascript">
-        // items
-        $( function() {
-            $( ".list" ).sortable({
-                revert: true,
-                connectWith: '.list',
-                update: function (event, ui) {
-                    var order_data = {
-                        "items": $(this).sortable('serialize'),
-                        "csrfmiddlewaretoken": "{{ csrf_token }}"
-                    };
-
-                    // make sure we only send one group change request
-                    if (this !== ui.item.parent()[0]) {
-                        var group_data = {
-                            "item_id": ui.item.attr('id').substr(5),
-                            "group_id": ui.item.parent().attr('id').substr(5),
-                            "csrfmiddlewaretoken": "{{ csrf_token }}"
-                        };
-
-                        $.ajax({
-                            data: group_data,
-                            type: 'POST',
-                            url: '{%  url 'item_move' %}'
-                        });
-                    }
-
-                    $.ajax({
-                        data: order_data,
-                        type: 'POST',
-                        url: '{% url 'group_order' %}'
-                    });
-                }
-            });
-            $( ".item" ).disableSelection();
-        });
-
-        // groups
-        $( function() {
-            $( "#content" ).sortable({
-                items: '.group:not(.pin)',
-                revert: true,
-                update: function (event, ui) {
-                    var order_data = {
-                        "groups": $(this).sortable('serialize'),
-                        "csrfmiddlewaretoken": "{{ csrf_token }}"
-                    };
-
-                    $.ajax({
-                        data: order_data,
-                        type: 'POST',
-                        url: '{% url 'board_order' %}'
-                    });
-                }
-            });
-            $( ".header" ).disableSelection();
-        });
-
-        $( function() {
-            $('a.delete_item').click(function (e) {
-                e.preventDefault();
-                $(this).parent().hide();
-
-                var item_data = {
-                        "item_id": $(this).parent().attr('id').substr(5),
-                        "csrfmiddlewaretoken": "{{ csrf_token }}"
-                    };
-
-                $.ajax({
-                        data: item_data,
-                        type: 'POST',
-                        url: '{% url 'item_delete' %}'
-                    });
-            });
-        });
-
-        $( function() {
-            $('a.unlock_group').click(function (e) {
-                e.preventDefault();
-                if ($(this).children().hasClass('lock')) {
-                    $(this).parent().parent().find('a.delete_item').show();
-                    $(this).parent().parent().find('.ui.item.segment').css({'padding-right': '25px'});
-                    $(this).children().removeClass('lock');
-                    $(this).children().addClass('unlock');
-                }
-                else {
-                    $(this).parent().parent().find('a.delete_item').hide();
-                    $(this).parent().parent().find('.ui.item.segment').css({'padding-right': '10px'});
-                    $(this).children().removeClass('unlock');
-                    $(this).children().addClass('lock');
-                }
-            });
-        });
+        var csrf_token = "{{ csrf_token }}";
+        var item_move_url = "{%  url 'item_move' %}";
+        var item_delete_url = "{% url 'item_delete' %}";
+        var group_order_url = "{% url 'group_order' %}";
+        var group_delete_url = "{% url 'group_delete' %}";
+        var board_order_url = "{% url 'board_order' %}";
     </script>
+    <script src="{% static "task_manager/js/tracker.js" %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -102,8 +17,12 @@
     <div id="group_{{ group.id }}" class="group ui card">
         <div class="content">
             <div class="header">
-                <a class="unlock_group" href="#"><i class="lock grey icon"></i></a>
-                {{ group.name|striptags }}</div>
+                <div class="group_icons">
+                    <a class="delete_group" href="#"><i class="remove circle red icon"></i></a>
+                    <a class="unlock_group" href="#"><i class="lock grey icon"></i></a>
+                </div>
+                {{ group.name|striptags }}
+            </div>
             <div class="description">
                 <div id="list_{{ group.id }}" class="ui list">
                     {% for item in group.item_set.all %}

@@ -1,9 +1,7 @@
+/* Site wide */
+
 body {
     background-color: #3ac0ff;
-}
-
-#wrapper {
-
 }
 
 header {
@@ -31,7 +29,9 @@ header > #menu > a > button {
     display: inline-block;
 }
 
-.header > a > i {
+/* Tracker */
+
+.header > .group_icons {
     float: right;
 }
 
@@ -68,6 +68,12 @@ form.ui.action.input > input {
     height: 100%;
     margin-right: -20px;
 }
+
+a.delete_group {
+    display: none;
+}
+
+/* Login/Register forms */
 
 #container {
     margin-left: auto;
