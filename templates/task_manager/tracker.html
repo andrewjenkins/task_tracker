@@ -2,6 +2,7 @@
 {% load static %}
 {% block head %}
     <script type="text/javascript">
+        // items
         $( function() {
             $( ".list" ).sortable({
                 revert: true,
@@ -36,12 +37,32 @@
             });
             $( ".item" ).disableSelection();
         });
+
+        // groups
+        $( function() {
+            $( "#content" ).sortable({
+                revert: true,
+                update: function (event, ui) {
+                    var order_data = {
+                        "groups": $(this).sortable('serialize'),
+                        "csrfmiddlewaretoken": "{{ csrf_token }}"
+                    };
+
+                    $.ajax({
+                        data: order_data,
+                        type: 'POST',
+                        url: '{% url 'board_order' %}'
+                    });
+                }
+            });
+            $( ".header" ).disableSelection();
+        });
     </script>
 {% endblock %}
 
 {% block content %}
     {% for group in groups %}
-    <div class="group ui card">
+    <div id="group_{{ group.id }}" class="group ui card">
         <div class="content">
             <div class="header">{{ group.name|striptags }}</div>
             <div class="description">

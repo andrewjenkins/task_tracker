@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout, authenticate, login
 from .models import Board, Group, Item
-from .utils import parse_item_orders
+from .utils import parse_orders
 
 
 class Index(LoginRequiredMixin, generic.TemplateView):
@@ -19,6 +19,19 @@ class Index(LoginRequiredMixin, generic.TemplateView):
         context['groups'] = Group.objects.filter(board=board)
         context['title'] = 'Task Tracker'
         return context
+
+
+class BoardOrder(LoginRequiredMixin, generic.View):
+    def post(self, request):
+        order = 0
+        group_ids = parse_orders('group', request.POST['groups'])
+        for group_id in group_ids:
+            order += 1
+            group = get_object_or_404(Group, id=group_id)
+            if group.has_access(request.user):
+                group.order = order
+                group.save()
+        return HttpResponse(status=200)
 
 
 class GroupAdd(LoginRequiredMixin, generic.View):
@@ -38,7 +51,7 @@ class GroupAdd(LoginRequiredMixin, generic.View):
 class GroupOrder(LoginRequiredMixin, generic.View):
     def post(self, request):
         order = 0
-        item_ids = parse_item_orders(request.POST['items'])
+        item_ids = parse_orders('item', request.POST['items'])
         for item_id in item_ids:
             order += 1
             item = get_object_or_404(Item, id=item_id)
