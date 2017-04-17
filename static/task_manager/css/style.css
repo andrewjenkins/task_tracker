@@ -39,10 +39,19 @@ header > #menu > a > button {
     background-color: #B4E7FF;
 }
 
+.ui.item.segment {
+    word-break: break-all;
+}
+
+
+.ui.item.segment > a > .icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
 
 form.ui.action.input > input {
-    width: 100%;
-    padding-right: 5px;
+    width: 99%;
 }
 
 .ui.list {

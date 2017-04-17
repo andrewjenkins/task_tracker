@@ -57,6 +57,13 @@
             });
             $( ".header" ).disableSelection();
         });
+
+        $( function() {
+            $('.delete_item').click(function (e) {
+                e.preventDefault();
+                $(this).parent().hide();
+            });
+        })();
     </script>
 {% endblock %}
 
@@ -68,7 +75,10 @@
             <div class="description">
                 <div id="list_{{ group.id }}" class="ui list">
                     {% for item in group.item_set.all %}
-                    <div id="item_{{ item.id }}" class="ui item segment">{{ item.content|striptags }}</div>
+                        <div id="item_{{ item.id }}" class="ui item segment">
+                            {{ item.content|striptags }}
+                            <a class="delete_item" href="#"><i class="remove circle red icon"></i></a>
+                        </div>
                     {% endfor %}
                 </div>
                 <form action="{% url 'item_add' %}" class="ui action input" method="post">
