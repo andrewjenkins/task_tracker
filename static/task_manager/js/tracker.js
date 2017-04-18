@@ -1,4 +1,6 @@
 // items
+var modal_active;
+
 $(function() {
     $(".list").sortable({
         revert: true,
@@ -99,12 +101,21 @@ $(function() {
 $(function() {
     $("a.delete_group").click(function(e) {
         e.preventDefault();
-        $(this).parents(".group").hide();
+        modal_active = $(this);
+        $('.ui.modal').modal('show');
+    });
+});
+
+$(function() {
+    $("#confirm_delete").click(function(e) {
+       modal_active.parents(".group").hide();
 
         var group_data = {
-            "group_id": $(this).parents('.group').attr('id').substr(6),
+            "group_id": modal_active.parents('.group').attr('id').substr(6),
             "csrfmiddlewaretoken": csrf_token
         };
+
+        $('.ui.modal').modal('hide');
 
         $.ajax({
             data: group_data,
